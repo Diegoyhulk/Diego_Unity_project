@@ -1,5 +1,6 @@
 ﻿using System;
 using DefaultNamespace;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,9 +10,10 @@ namespace Funcions
     {
         bool addforce = false;
         private bool inside = false;
-        public float anguloObjetivo = -475.77f;
-        [SerializeField]public float velocidad = 2f;
-        [SerializeField] public float Force;
+        private float anguloObjetivo = -475.77f;
+        [SerializeField] private float velocidad = 2f;
+        [SerializeField] private float Force;
+        [SerializeField] private CinemachineCamera playercamera;
         private float time;
         private float initrotation;
 
@@ -20,6 +22,7 @@ namespace Funcions
             if (!inside)
             {
                 inside = true;
+                playercamera.enabled = false;
             }
         }
         public void AddForce(ref Rigidbody rigidbody)
@@ -42,18 +45,17 @@ namespace Funcions
                 Quaternion rotacionDeseada = Quaternion.Euler(0, 90, anguloObjetivo);
                 transform.rotation = Quaternion.Lerp(transform.rotation, rotacionDeseada, Time.deltaTime * velocidad);
                 time += Time.deltaTime;
-                if (time > 2f){
+                if (time > 3f){
                     addforce = true;
+                    playercamera.enabled = true;
                 }
-
-                if (time > 3f)
+                if (time > 4f)
                 {
                     inside = false;
                     time = 0;
                     addforce = false;
                 }
             }
-
             if (!inside)
             {
                 Quaternion rotacionDeseada = Quaternion.Euler(0, 90,initrotation);
