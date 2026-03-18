@@ -5,7 +5,7 @@ public class Double_Jump_ball : MonoBehaviour
 {
     private bool enabled = true;
     [SerializeField] public float timer;
-    public float _Time;
+    private float _Time;
     private MeshRenderer _meshRenderer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

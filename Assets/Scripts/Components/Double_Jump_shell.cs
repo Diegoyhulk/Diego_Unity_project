@@ -6,7 +6,7 @@ public class Double_Jump_shell : MonoBehaviour
     private MeshRenderer[] renderers;
     private bool enabled = true;
     [SerializeField] public float timer;
-    public float _Time;
+    private float _Time;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

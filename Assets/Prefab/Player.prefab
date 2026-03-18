@@ -112,6 +112,7 @@ MonoBehaviour:
   initposition: {x: 0, y: 0, z: 0}
   timer: 0
   Jumpspeed: 10
+  SuperJumpspeed: 20
   MovmentF: 100
   points: 21
   whatisinteractable:

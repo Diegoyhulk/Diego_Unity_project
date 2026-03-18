@@ -23,11 +23,13 @@ public class Bolita : MonoBehaviour
     private float healtime;
     private int HP = 3;
     [Header("Movement")] [SerializeField] private float Jumpspeed;
+    [SerializeField] private float SuperJumpspeed;
     public float MovmentF = 100;
     public int points;
     private int jumps;
     private bool jumpif = true;
     private bool Checkpoint1 = false;
+    private int Superjump;
 
     [Header("Chekers")] [SerializeField] private LayerMask whatisinteractable;
 
@@ -54,6 +56,7 @@ public class Bolita : MonoBehaviour
         float vInput = Input.GetAxisRaw("Vertical"); //Lo mismo pero con las teclas verticales
         movement = new Vector3(hInput, 0, vInput).normalized;
         Jump();
+        SuperJump();
         Interact1();
         Crouch();
         if (!sphere.enabled)
@@ -75,6 +78,7 @@ public class Bolita : MonoBehaviour
 
     private void Jump()
     {
+        if(Superjump > 0){return;}
         if (!Input.GetKeyDown(KeyCode.Space)) return;
         if (jumps > 0)
         {
@@ -86,11 +90,30 @@ public class Bolita : MonoBehaviour
                 jumpif = true;
             }
         }
-
         audiosource.clip = JumpSound;
         audiosource.volume = 0f;
         audiosource.Play();
 
+    }
+
+    private void SuperJump()
+    {
+        if (Superjump <= 0) { return;}
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        if (jumps > 0)
+        {
+            Audio_Music.Instance.PlaySfx(JumpSound);
+            rb.AddForce(Vector3.up * SuperJumpspeed, ForceMode.Impulse);
+            jumps--;
+            if (jumps < 2)
+            {
+                jumpif = true;
+            }
+        }
+        audiosource.clip = JumpSound;
+        audiosource.volume = 0f;
+        audiosource.Play();
+        Superjump--;
     }
 
     private void Crouch()
@@ -123,6 +146,16 @@ public class Bolita : MonoBehaviour
         audiosource.Play();
         jumps = 2;
         jumpif = false;
+    }
+
+    public void EnhancedRecharge()
+    {
+        audiosource.clip = RechargeSound;
+        audiosource.volume = 0.3f;
+        audiosource.Play();
+        jumps = 2;
+        jumpif = false;
+        Superjump += 2;
     }
     
 
