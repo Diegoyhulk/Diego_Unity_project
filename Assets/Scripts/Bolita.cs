@@ -26,7 +26,7 @@ public class Bolita : MonoBehaviour
     [SerializeField] private float SuperJumpspeed;
     public float MovmentF = 100;
     public int points;
-    private int jumps;
+    public int jumps;
     private bool jumpif = true;
     private bool Checkpoint1 = false;
     private int Superjump;
@@ -76,7 +76,7 @@ public class Bolita : MonoBehaviour
         rb.AddForce(movement * MovmentF, ForceMode.Force);
     }
 
-    private void Jump()
+    public void Jump()
     {
         if(Superjump > 0){return;}
         if (!Input.GetKeyDown(KeyCode.Space)) return;
@@ -200,7 +200,10 @@ public class Bolita : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        
+        if (other.gameObject.TryGetComponent(out IOut iout))
+        {
+            iout.IsOut();
+        }
     }
     private void OnCollisionEnter(Collision other)
     {
