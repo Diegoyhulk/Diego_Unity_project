@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class Angel : MonoBehaviour, IAddforce
 {
-    GameObject OuterSide;
-    GameObject MidSide;
-    GameObject InnerSide;
-    GameObject Core;
-    GameObject MidShells;
-    GameObject InnerShells;
-    GameObject CoreShells;
+    private GameObject OuterSide;
+    private GameObject MidSide;
+    private GameObject InnerSide;
+    private GameObject Core;
+    private GameObject MidShells;
+    private GameObject InnerShells;
+    private GameObject CoreShells;
     private bool pushbackTrigger;
     private bool finalhit;
     private bool Disable_Outer;
