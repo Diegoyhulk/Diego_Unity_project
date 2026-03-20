@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WindHell : MonoBehaviour , IAddforce
@@ -7,6 +8,13 @@ public class WindHell : MonoBehaviour , IAddforce
     [SerializeField] private float Force;
     public void AddForce(ref Rigidbody rigidbody)
     {
-        rigidbody.AddForce((Vector3.up * Direction) * Force, ForceMode.Force);
+        if (Input.GetMouseButton(1))
+        {
+            rigidbody.AddForce((Vector3.up * Direction) * (Force * 1.5f), ForceMode.Force);
+        }
+        else
+        {
+            rigidbody.AddForce((Vector3.up * Direction) * Force, ForceMode.Force);
+        }
     }
 }

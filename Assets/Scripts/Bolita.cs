@@ -118,12 +118,12 @@ public class Bolita : MonoBehaviour
 
     private void Crouch()
     {
-        if (Input.GetMouseButton((int)MouseButton.Left))
+        if (Input.GetMouseButton(0))
         {
             rb.AddForce(Vector3.down * 3, ForceMode.Force);
             MovmentF = 20f;
         }
-        if (Input.GetMouseButtonUp((int)MouseButton.Left))
+        if (Input.GetMouseButtonUp(0))
         {
             MovmentF = 100f;
         }
