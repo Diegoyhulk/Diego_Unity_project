@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,7 +22,7 @@ public class Bolita : MonoBehaviour
     public float timer;
     private float dmg_time;
     private float healtime;
-    private int HP = 3;
+    private int HP = 10;
     [Header("Movement")] [SerializeField] private float Jumpspeed;
     [SerializeField] private float SuperJumpspeed;
     public float MovmentF = 100;
@@ -29,6 +30,7 @@ public class Bolita : MonoBehaviour
     public int jumps;
     private bool jumpif = true;
     private bool Checkpoint1 = false;
+    private bool Checkpoint2 = false;
     private int Superjump;
 
     [Header("Chekers")] [SerializeField] private LayerMask whatisinteractable;
@@ -165,16 +167,7 @@ public class Bolita : MonoBehaviour
         {
             interacteable.Interact(ref points);
         }
-        if (other.gameObject.CompareTag("Checkpoint1") && !Checkpoint1)
-        {
-            initposition = gameObject.transform.position;
-            Checkpoint1 = true;
-            Debug.Log("Checkpoint1");
-        }
-        
     }
-
-    
 
     private void OnTriggerStay(Collider other)
     {
@@ -225,9 +218,7 @@ public class Bolita : MonoBehaviour
             UiManager.Instance.HP_Text.text = "HP: " + HP;
             if (HP == 0)
             {
-                sphere.enabled = !sphere.enabled;
-                HP = 3;
-                UiManager.Instance.HP_Text.text = "HP: " + HP;
+                SceneManager.LoadScene("GameOver");
             }
         }
         if (other.gameObject.CompareTag("Door") && points > 20)
@@ -239,7 +230,7 @@ public class Bolita : MonoBehaviour
 
         if (other.gameObject.CompareTag("Out"))
         {
-            transform.position = initposition;
+            SceneManager.LoadScene("GameOver");
         }
         
     }
@@ -250,8 +241,9 @@ public class Bolita : MonoBehaviour
             dmg_time += Time.deltaTime;
             if (dmg_time >= 3f)
             {
-                gameObject.transform.position = initposition;
-                dmg_time = 0;
+                HP -= 2;
+                dmg_time = 0f;
+                UiManager.Instance.HP_Text.text = "HP: " + HP;
             }  
         }
     }

@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
 using DefaultNamespace;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Angel : MonoBehaviour, IAddforce
-{
+{ 
     private GameObject OuterSide;
     private GameObject MidSide;
     private GameObject InnerSide;
@@ -19,6 +21,8 @@ public class Angel : MonoBehaviour, IAddforce
     private bool Disable_Inner;
     private bool Disable_Core;
     private bool awake = true;
+    /*HE TARTADO DE PONER UNA MALDITAS PARTICULAS A LA HORA DE ROMPER LOS ANILLOS PERO POR ALGUNA RAZON SE ROMPIA
+    TODO EL MALDITO CODIGO*/
 
     private void Awake()
     {
@@ -107,6 +111,7 @@ public class Angel : MonoBehaviour, IAddforce
         {
             Core.SetActive(false);
             CoreShells.SetActive(false);
+            SceneManager.LoadScene("Final");
             Disable_Core = false;
         }
     }
