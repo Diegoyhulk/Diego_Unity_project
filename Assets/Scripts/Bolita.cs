@@ -15,14 +15,13 @@ public class Bolita : MonoBehaviour
 {
     //rb.AddForce(Vector3.up * 10, ForceMode.Force)
     private Rigidbody rb;
-    private SphereCollider sphere;
     private Vector3 movement;
     public Vector3 initposition;
     private AudioSource audiosource;
-    public float timer;
     private float dmg_time;
     private float healtime;
     private int HP = 10;
+    private int MaxHP = 10;
     [Header("Movement")] [SerializeField] private float Jumpspeed;
     [SerializeField] private float SuperJumpspeed;
     public float MovmentF = 100;
@@ -32,17 +31,17 @@ public class Bolita : MonoBehaviour
     private bool Checkpoint1 = false;
     private bool Checkpoint2 = false;
     private int Superjump;
-
+    
     [Header("Chekers")] [SerializeField] private LayerMask whatisinteractable;
 
-    [Header("SFX")] [SerializeField] private AudioClip JumpSound;
+    [Header("SFX")]
+    [SerializeField] private AudioClip JumpSound;
     [SerializeField] private AudioClip RechargeSound;
 
     public void Awake()
     {
         rb = this.gameObject.GetComponent<Rigidbody>();
         audiosource = GetComponent<AudioSource>();
-        sphere = GetComponent<SphereCollider>();
         initposition = gameObject.transform.position;
     }
 
@@ -61,16 +60,6 @@ public class Bolita : MonoBehaviour
         SuperJump();
         Interact1();
         Crouch();
-        if (!sphere.enabled)
-        {
-            timer += Time.deltaTime;
-            if (timer >= 2f)
-            {
-                sphere.enabled = true;
-                timer = 0f;
-                HP = 3;
-            }
-        }
     }
 
     private void FixedUpdate() //Cada 0,02 segundos se actualiza cada vez
@@ -92,10 +81,6 @@ public class Bolita : MonoBehaviour
                 jumpif = true;
             }
         }
-        audiosource.clip = JumpSound;
-        audiosource.volume = 0f;
-        audiosource.Play();
-
     }
 
     private void SuperJump()
@@ -112,9 +97,6 @@ public class Bolita : MonoBehaviour
                 jumpif = true;
             }
         }
-        audiosource.clip = JumpSound;
-        audiosource.volume = 0f;
-        audiosource.Play();
         Superjump--;
     }
 
@@ -143,18 +125,14 @@ public class Bolita : MonoBehaviour
 
     public void Recharge()
     {
-        audiosource.clip = RechargeSound;
-        audiosource.volume = 0.3f;
-        audiosource.Play();
+        Audio_Music.Instance.PlaySfx(RechargeSound);
         jumps = 2;
         jumpif = false;
     }
 
     public void EnhancedRecharge()
     {
-        audiosource.clip = RechargeSound;
-        audiosource.volume = 0.3f;
-        audiosource.Play();
+        Audio_Music.Instance.PlaySfx(RechargeSound);
         jumps = 2;
         jumpif = false;
         Superjump += 2;
@@ -174,9 +152,8 @@ public class Bolita : MonoBehaviour
         if (other.gameObject.CompareTag("Heal"))
         {
             healtime += Time.deltaTime;
-            if (healtime >= 2f && HP < 3)
+            if (healtime >= 2f && HP < MaxHP)
             {
-                sphere.enabled = true;
                 healtime = 0f;
                 dmg_time = 0;
                 HP++;
@@ -218,10 +195,10 @@ public class Bolita : MonoBehaviour
             UiManager.Instance.HP_Text.text = "HP: " + HP;
             if (HP == 0)
             {
-                SceneManager.LoadScene("GameOver");
+                Dead();
             }
         }
-        if (other.gameObject.CompareTag("Door") && points > 20)
+        if (other.gameObject.CompareTag("Door"))
         {
             other.gameObject.GetComponent<MeshRenderer>().enabled = false;
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
@@ -230,7 +207,7 @@ public class Bolita : MonoBehaviour
 
         if (other.gameObject.CompareTag("Out"))
         {
-            SceneManager.LoadScene("GameOver");
+           Dead();
         }
         
     }
@@ -244,8 +221,18 @@ public class Bolita : MonoBehaviour
                 HP -= 2;
                 dmg_time = 0f;
                 UiManager.Instance.HP_Text.text = "HP: " + HP;
+                if (HP == 0)
+                {
+                    Dead();
+                }
             }  
         }
+    }
+
+    private void Dead()
+    {
+        audiosource.Stop();
+        SceneManager.LoadScene("GameOver");
     }
     
     private void OnDrawGizmos() //Dibujar en el editor

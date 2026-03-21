@@ -19,7 +19,7 @@ namespace Funcions
 
         public void Interact(ref int points)
         {
-            if (!inside)
+            if (!inside && points > 20) 
             {
                 inside = true;
                 playercamera.enabled = false;

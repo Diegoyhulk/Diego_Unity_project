@@ -121,6 +121,7 @@ MonoBehaviour:
     m_Bits: 64
   JumpSound: {fileID: 8300000, guid: fcadffb913d49394eb506cbdad1ff007, type: 3}
   RechargeSound: {fileID: 8300000, guid: 57201bba55bc7ae4a988cc4068f7a684, type: 3}
+  Music_Start: {fileID: 8300000, guid: 224c8618932b4cd49b9b7e79471bd5f3, type: 3}
 --- !u!135 &2114674980435812310
 SphereCollider:
   m_ObjectHideFlags: 0
